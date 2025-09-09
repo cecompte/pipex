@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:15:56 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/09 13:59:58 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:45:07 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@
 char	*find_path(char *cmd, char **envp);
 char	*build_path(char *src, char *cmd);
 void	free_tab(char **tab);
+void	print_tab(char **tab);
 
 #endif

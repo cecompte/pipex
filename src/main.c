@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/09 16:02:57 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:50:03 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,37 +28,42 @@ void	free_tab(char **tab)
 	tab = NULL;
 }
 
+void	print_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		ft_printf("%s\n", tab[i]);
+		i++;
+	}
+}
 int main(int argc, char **argv, char **envp)
 {
 	int		status;
 	char	*path;
-    char 	*file;
     char 	**args;
-	pid_t	parent;
+	pid_t	child1;
 	
-	if (argc < 3) {
+	if (argc < 1) {
         return 1;
     }
-	parent = fork();
-	if (parent < 0)
+	child1 = fork();
+	if (child1 < 0)
 		return (write(2, strerror(errno), ft_strlen(strerror(errno))), 1);
-	path = find_path(argv[1], envp);
+	args = ft_split(argv[1], ' ');
+	path = find_path(args[0], envp);
 	if (!path)
-		return (!ft_printf("Command not found"));
-	file = argv[2];
-	args = malloc(argc * sizeof(char *));
-	args[0] = path;
-	args[1] = file;  // e.g., "infile"
-	args[2] = NULL;
-	if (!parent)
+			return (!ft_printf("Command not found"));
+	if (!child1)
 	{
-    	execve(path, args, envp);
-		// If execve returns, there was an error
+		execve(path, args, envp);
 		perror("execve");
 	}
 	else
 	{
-		waitpid(parent, &status, 0);
+		waitpid(child1, &status, 0);
 	}
 	free(path);
 	free(args);
