@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/09 18:29:52 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/09 18:39:50 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int main(int argc, char **argv, char **envp)
     char 	**cmd1;
 	char	**cmd2;
 	pid_t	child1;
-	// pid_t	child2;
 	int		end[2];
 	
 	if (argc < 1) {
@@ -63,12 +62,12 @@ int main(int argc, char **argv, char **envp)
 	// make a pipe + fds go in pipefd[0] and pipefd[1]
 	pipe(end);
 	
+	child1 = fork();
+	
 	cmd1 = ft_split(argv[2], ' '); // + malloc error
 	cmd2 = ft_split(argv[3], ' '); // + malloc error
 	path1 = find_path(cmd1[0], envp); // + malloc error
 	path2 = find_path(cmd2[0], envp); // + malloc error
-	
-	child1 = fork();
 	
 	if (child1 < 0)
 		return (write(2, strerror(errno), ft_strlen(strerror(errno))), 1);
