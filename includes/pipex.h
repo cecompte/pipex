@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:15:56 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/09 16:45:07 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/09 17:05:20 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../libft/includes/libft.h"
 # include <sys/wait.h>
 # include <errno.h>
+# include <fcntl.h>
 
 char	*find_path(char *cmd, char **envp);
 char	*build_path(char *src, char *cmd);
