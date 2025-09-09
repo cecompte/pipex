@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/09 12:49:35 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/09 12:53:44 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,15 @@ char	*find_path(char *cmd, char **envp)
 	char	*path_cmd;
 	int		i;
 
-	// loop through envp to find PATH
-	i = 0;
-	while (envp[i])
+	i = -1;
+	while (envp[++i])
 	{
 		if (ft_strnstr(envp[i], "PATH", 4))
 			break;
-		i++;
 	}
-	// trim "PATH"
 	path_all = ft_substr(envp[i], 5, ft_strlen(envp[i]));
-	
-	// split into directories using : separator
 	dir = ft_split(path_all, ':');
 	free(path_all);
-
-	// check if file exists and is executable
 	i = 0;
 	while (dir[i])
 	{
