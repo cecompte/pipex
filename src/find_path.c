@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:54:45 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/09 13:55:14 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/10 16:51:06 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*find_path(char *cmd, char **envp)
 	while (dir[i])
 	{
 		path_cmd = build_path(dir[i], cmd);
-		if (access(path_cmd, X_OK) == 0 || !path_cmd)
+		if (access(path_cmd, X_OK) == 0 || !path_cmd) // specific error when command does not exist
 			return (free_tab(dir), path_cmd);
 		free(path_cmd);
 		i++;
