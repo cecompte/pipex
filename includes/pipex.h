@@ -6,7 +6,7 @@
 /*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:15:56 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/10 12:46:54 by user             ###   ########.fr       */
+/*   Updated: 2025/09/11 12:04:17 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <fcntl.h>
 
 //find_path
-char	*find_path(char *cmd, char **envp);
-char	*build_path(char *src, char *cmd);
+char	*find_path(char **cmd, char **envp);
+char	*build_path(char *src, char **cmd);
 
 //errors
 void	free_tab(char **tab);
