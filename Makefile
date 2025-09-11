@@ -7,6 +7,7 @@ NAME			= pipex
 SRC_PATH		= src/
 SRC				= main.c \
 					find_path.c \
+					build_cmd.c \
 					errors.c \
 					processes.c
 SOURCES			= $(addprefix $(SRC_PATH), $(SRC))

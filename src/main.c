@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/11 16:19:14 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:03:28 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,44 +23,47 @@ void	print_tab(char **tab)
 		i++;
 	}
 }
+int		*open_files(char **argv)
+{
+	int *fd;
+
+	fd = malloc(2 *sizeof(int));
+	if (!fd)
+		exit_error();
+	fd[0] = open(argv[1], O_RDONLY);
+	if (fd[0] < 0)
+		exit_error();
+	fd[1] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd[1] < 0)
+		exit_close(fd, 0);
+	return (fd);
+}
 
 int main(int argc, char **argv, char **envp)
 {
 	int		status;
-	int		fd1;
-	int		fd2;
+	int		*fd;
 	pid_t	pid;
 	int		end[2];
 	
 	if (argc != 5)
 		return (ft_printf("Wrong nb of arguments\n"));
-	fd1 = open(argv[1], O_RDONLY);
-	if (fd1 < 0)
-		return (exit_error(1));
-	fd2 = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd2 < 0)
-		return (exit_error(1)); //add close at every exit
+	fd = open_files(argv);
 	pipe(end);
 	pid = fork();
 	if (pid < 0)
-		return (exit_error(1));
+		return (exit_close(fd, end));
 	if (pid == 0)
-		child(fd1, end, argv, envp);
+		child(fd, end, argv, envp);
 	else
 	{
 		waitpid(pid, &status, 0);
-		parent(fd2, end, argv, envp);
+		parent(fd, end, argv, envp);
 	}
 }
 
-// int main(int argc, char **argv)
-// {
-// 	char	**cmd;
-	
-// 	if (argc < 2)
-// 		return (0);
-// 	cmd = build_cmd(argv[1]);
-// 	print_tab(cmd);
-// 	free_tab(cmd);
-// 	return (1);
-// }
+/* to do 
+- command : infile "  " cat outfile returns Success
+- check if all fds close properly : valgrind --trace-children=yes --track-fds=yes --leak-check=full --show-leak-kinds=all 
+- add another fork : ./pipex Makefile "sleep 5" "sleep 2" outfile
+*/

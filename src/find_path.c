@@ -6,13 +6,13 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:54:45 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/11 16:38:35 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/11 17:53:38 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*build_path(char *src, char **cmd)
+static char	*build_path(char *src, char **cmd)
 {
 	char	*path;
 	int		len_src;
@@ -29,82 +29,46 @@ char	*build_path(char *src, char **cmd)
 	return (path);
 }
 
-char	*find_path(char **cmd, char **envp)
+static char	**split_dir(char **envp)
 {
 	char	**dir;
 	char	*path_all;
-	char	*path_cmd;
 	int		i;
 
-	i = -1;
-	while (envp[++i])
+	if (!envp)
+		return (NULL);
+	i = 0;
+	while (envp[i])
 	{
 		if (ft_strnstr(envp[i], "PATH", 4))
 			break;
+		i++;
 	}
 	path_all = ft_substr(envp[i], 5, ft_strlen(envp[i]));
-	dir = ft_split(path_all, ':'); // malloc error
+	dir = ft_split(path_all, ':');
 	free(path_all);
-	i = -1;
-	while (dir[++i])
+	return (dir);
+}
+
+char	*find_path(char **cmd, char **envp, int *fd, int *end)
+{
+	char	**dir;
+	char	*path_cmd;
+	int		i;
+
+	dir = split_dir(envp);
+	if (!dir)
+		exit_close(fd, end);
+	i = 0;
+	while (dir[i])
 	{
 		path_cmd = build_path(dir[i], cmd);
 		if (!path_cmd)
-			return (free_tab(dir), exit_error(1), NULL);
+			return (free_tab(dir), exit_close(fd, end), NULL);
 		if (access(path_cmd, X_OK) == 0)
 			return (free_tab(dir), path_cmd);
 		free(path_cmd);
+		i++;
 	}
 	return (free_tab(dir), NULL);
-}
-
-static char	*with_quote(char *str)
-{
-	char	quote_char;
-	int		i;
-
-	quote_char = str[0];
-	i = 1;
-	while (str[i] != quote_char && str[i] != '\0')
-		i++;
-	return (ft_strndup(&str[1], i - 1));
-}
-
-static char	*without_quote(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != ' ' && str[i] != '\0')
-		i++;
-	return (ft_strndup(str, i));
-}
-
-char	**build_cmd(char *str)
-{
-	char	**cmd;
-	int		i;
-	int		j;
-
-	cmd = ft_calloc(100, sizeof(char *));
-	if (!cmd)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		while (str[i] == ' ')
-			i++;
-		if (str[i] == 39 || str[i] == 34)
-		{
-			cmd[j] = with_quote(&str[i]);
-			i += 2;
-		}
-		else
-			cmd[j] = without_quote(&str[i]);
-		if (!cmd[j])
-			return (free_tab(cmd), NULL);
-		i += ft_strlen(cmd[j++]);
-	}
-	return (cmd);
 }
