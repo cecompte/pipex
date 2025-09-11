@@ -6,32 +6,34 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 17:38:59 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/11 17:39:20 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:48:20 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	*with_quote(char *str)
+static char	*with_quote(char *sub)
 {
 	char	quote_char;
 	int		i;
 
-	quote_char = str[0];
+	quote_char = sub[0];
 	i = 1;
-	while (str[i] != quote_char && str[i] != '\0')
+	while (sub[i] != quote_char && sub[i] != '\0')
 		i++;
-	return (ft_strndup(&str[1], i - 1));
+	return (ft_strndup(&sub[1], i - 1));
 }
 
-static char	*without_quote(char *str)
+static char	*without_quote(char *sub, char *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] != ' ' && str[i] != '\0')
+	if (!sub[i])
+		return (ft_strdup(str));
+	while (sub[i] != ' ' && sub[i] != '\0')
 		i++;
-	return (ft_strndup(str, i));
+	return (ft_strndup(sub, i));
 }
 
 char	**build_cmd(char *str)
@@ -55,7 +57,7 @@ char	**build_cmd(char *str)
 			i += 2;
 		}
 		else
-			cmd[j] = without_quote(&str[i]);
+			cmd[j] = without_quote(&str[i], str);
 		if (!cmd[j])
 			return (free_tab(cmd), NULL);
 		i += ft_strlen(cmd[j++]);

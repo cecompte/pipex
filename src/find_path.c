@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:54:45 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/11 17:53:38 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:29:48 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*find_path(char **cmd, char **envp, int *fd, int *end)
 	char	*path_cmd;
 	int		i;
 
+	if (!cmd)
+		return (NULL);
 	dir = split_dir(envp);
 	if (!dir)
 		exit_close(fd, end);

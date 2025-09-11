@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 11:57:58 by user              #+#    #+#             */
-/*   Updated: 2025/09/11 17:55:13 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:20:10 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	child(int *fd, int *end, char **argv, char **envp)
 
 	cmd = build_cmd(argv[2]);
 	if (!cmd)
-		return (exit_close(fd, end)); // close
+		return (exit_close(fd, end));
 	path = find_path(cmd, envp, fd, end);
 	if (!path)
 		return (not_found(fd, end, cmd[0]), free_tab(cmd), exit(127), 1);

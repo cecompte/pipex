@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/11 18:03:28 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/11 18:51:07 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int main(int argc, char **argv, char **envp)
 
 /* to do 
 - command : infile "  " cat outfile returns Success
+- command : infile "" cat outfile should return permission denied
 - check if all fds close properly : valgrind --trace-children=yes --track-fds=yes --leak-check=full --show-leak-kinds=all 
 - add another fork : ./pipex Makefile "sleep 5" "sleep 2" outfile
 */
