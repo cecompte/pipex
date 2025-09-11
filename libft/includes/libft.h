@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:51:23 by cecompte          #+#    #+#             */
-/*   Updated: 2025/06/29 19:47:17 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/11 15:23:28 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stddef.h>
+# include <bsd/string.h>
 # include <string.h>
 # include <stdio.h>
 # include <limits.h>
@@ -71,5 +72,6 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+char	*ft_strndup(const char *s1, size_t n);
 
 #endif

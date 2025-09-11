@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/10 12:18:21 by user              #+#    #+#             */
-/*   Updated: 2025/09/11 14:10:53 by cecompte         ###   ########.fr       */
+/*   Created: 2025/09/11 15:17:31 by cecompte          #+#    #+#             */
+/*   Updated: 2025/09/11 15:18:20 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-void	free_tab(char **tab)
+char	*ft_strndup(const char *s1, size_t n)
 {
-	int	i;
+	char	*ptr;
+	size_t	i;
+	size_t	len;
 
+	if (!s1[0])
+		return (NULL);
+	len = ft_strlen(s1);
+	if (len < n)
+		n = len + 1;
+	ptr = ft_calloc(n + 1, 1);
+	if (!ptr)
+		return (NULL);
 	i = 0;
-	if (!tab)
-		return ;
-	while (tab[i])
+	if (n > 0)
 	{
-		free(tab[i]);
-		i++;
+		while (s1[i] && i < n)
+		{
+			ptr[i] = s1[i];
+			i++;
+		}
+		ptr[i] = '\0';
 	}
-	free(tab);
-	tab = NULL;
-}
-
-int	exit_error(int nb)
-{
-	perror(NULL);
-	exit(nb);
-	return (1);
+	return (ptr);
 }

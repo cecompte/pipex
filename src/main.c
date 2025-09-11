@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/10 16:49:49 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/11 16:19:14 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ int main(int argc, char **argv, char **envp)
 		return (ft_printf("Wrong nb of arguments\n"));
 	fd1 = open(argv[1], O_RDONLY);
 	if (fd1 < 0)
-		return (exit_error());
+		return (exit_error(1));
 	fd2 = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd1 < 0)
-		return (exit_error());
+	if (fd2 < 0)
+		return (exit_error(1)); //add close at every exit
 	pipe(end);
 	pid = fork();
 	if (pid < 0)
-		return (exit_error());
+		return (exit_error(1));
 	if (pid == 0)
 		child(fd1, end, argv, envp);
 	else
@@ -52,3 +52,15 @@ int main(int argc, char **argv, char **envp)
 		parent(fd2, end, argv, envp);
 	}
 }
+
+// int main(int argc, char **argv)
+// {
+// 	char	**cmd;
+	
+// 	if (argc < 2)
+// 		return (0);
+// 	cmd = build_cmd(argv[1]);
+// 	print_tab(cmd);
+// 	free_tab(cmd);
+// 	return (1);
+// }
