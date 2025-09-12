@@ -6,22 +6,32 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/12 15:55:32 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/12 17:53:16 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	open_files(int *fd, char **argv)
+void	open_files(t_ids *id, char **argv)
 {
-	fd[0] = open(argv[1], O_RDONLY);
-	if (fd[0] < 0)
-		exit_error();
-	fd[1] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd[1] < 0)
+	if (access(argv[1], F_OK) != 0)
 	{
-		close (fd[0]);
-		exit_error();
+		perror(NULL);
+		id->tmp = 1;
+		id->fd[0] = open(argv[1], O_CREAT | O_RDONLY);
+	}
+	else
+	{
+		id->fd[0] = open(argv[1], O_RDONLY);
+		if (id->fd[0] < 0)
+			exit_error(1);
+	}
+	id->fd[1] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (id->fd[1] < 0)
+	{
+		close(id->fd[0]);
+		unlink(argv[1]);
+		exit_error(1);
 	}
 }
 
@@ -34,12 +44,12 @@ int	main(int argc, char **argv, char **envp)
 		return (ft_putstr_fd("Wrong nb of arguments\n", 2), 1);
 	if (!envp)
 		return (ft_putstr_fd("No environment\n", 2), 1);
-	open_files(id.fd, argv);
+	open_files(&id, argv);
 	pipe(id.end);
 	id.child1 = fork();
 	id.child2 = 0;
 	if (id.child1 < 0)
-		return (exit_close(id));
+		return (exit_close(id, argv));
 	if (id.child1 == 0)
 	{
 		id.child2 = fork();
@@ -47,12 +57,15 @@ int	main(int argc, char **argv, char **envp)
 		child_one(argv, envp, id);
 	}
 	close_all(id);
+	if (id.tmp == 1)
+		unlink(argv[1]);
 	waitpid(id.child1, &status, 0);
 	waitpid(id.child2, &status, 0);
 }
 
 /* to do 
 - no environment
+- case when infile does not exist
 - check if all fds close properly : valgrind --trace-children=yes 
 --track-fds=yes --leak-check=full --show-leak-kinds=all 
 - add another fork : ./pipex Makefile "sleep 5" "sleep 2" outfile
