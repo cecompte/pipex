@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:15:56 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/12 13:02:12 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/12 14:44:21 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <fcntl.h>
 
 //open file
-int		*open_files(char **argv);
+void	open_files(int *fd, char **argv);
 
 //find_path
 int		try_path(char **cmd, char **envp, int *fd, int *end);
@@ -34,8 +34,8 @@ int		not_found(int *fd, int *end, char **cmd);
 int		close_all(int *fd, int *end);
 
 //processes
-int		child(int *fd, int *end, char **cmd, char **envp);
-int		parent(int *fd, int *end, char **cmd, char **envp);
+int		child_one(int *fd, int *end, char **cmd, char **envp);
+int		child_two(int *fd, int *end, char **cmd, char **envp, int pid);
 
 void	print_tab(char **tab);
 
