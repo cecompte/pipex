@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:18:21 by user              #+#    #+#             */
-/*   Updated: 2025/09/12 14:29:18 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/12 15:52:53 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,30 @@ int	exit_error(void)
 	exit(1);
 	return (1);
 }
-int	close_all(int *fd, int *end)
+
+int	close_all(t_ids id)
 {
-	close(fd[0]);
-	close(fd[1]);
-	close(end[0]);
-	close(end[1]);
+	close(id.fd[0]);
+	close(id.fd[1]);
+	close(id.end[0]);
+	close(id.end[1]);
 	return (1);
 }
 
-int	exit_close(int *fd, int *end)
+int	exit_close(t_ids id)
 {
 	perror(NULL);
-	close_all(fd, end);
+	close_all(id);
 	exit(1);
 	return (1);
 }
 
-int	not_found(int *fd, int *end, char **cmd)
+int	not_found(char **cmd, t_ids id)
 {
 	ft_putstr_fd(cmd[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
-	close_all(fd, end);
+	close_all(id);
 	free_tab(cmd);
-	exit(127);
-	return(1);
+	exit (127);
+	return (1);
 }
