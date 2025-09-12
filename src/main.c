@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/12 17:53:16 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/12 18:28:12 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	open_files(t_ids *id, char **argv)
 {
+	id->tmp = 0;
 	if (access(argv[1], F_OK) != 0)
 	{
 		perror(NULL);
@@ -21,12 +22,10 @@ void	open_files(t_ids *id, char **argv)
 		id->fd[0] = open(argv[1], O_CREAT | O_RDONLY);
 	}
 	else
-	{
 		id->fd[0] = open(argv[1], O_RDONLY);
-		if (id->fd[0] < 0)
-			exit_error(1);
-	}
 	id->fd[1] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (id->fd[0] < 0)
+		exit_error(1);
 	if (id->fd[1] < 0)
 	{
 		close(id->fd[0]);
@@ -65,8 +64,8 @@ int	main(int argc, char **argv, char **envp)
 
 /* to do 
 - no environment
-- case when infile does not exist
-- check if all fds close properly : valgrind --trace-children=yes 
---track-fds=yes --leak-check=full --show-leak-kinds=all 
+- wrong command in right part of the pipe -> wrong exit code
+- wrong flag -> wrong exit code
+- infile without permissions
 - add another fork : ./pipex Makefile "sleep 5" "sleep 2" outfile
 */

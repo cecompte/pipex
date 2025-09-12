@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 11:57:58 by user              #+#    #+#             */
-/*   Updated: 2025/09/12 17:48:20 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/12 18:07:19 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	child_one(char **argv, char **envp, t_ids id)
 	found = try_path(argv, cmd, envp, id);
 	if (!found)
 		return (not_found(argv, cmd, id));
-	return (free_tab(cmd), exit_error(0));
+	return (free_tab(cmd), exit_error(1));
 }
 
 int	child_two(char **argv, char **envp, t_ids id)
@@ -51,7 +51,7 @@ int	child_two(char **argv, char **envp, t_ids id)
 		found = try_path(argv, cmd, envp, id);
 		if (!found)
 			return (not_found(argv, cmd, id));
-		return (free_tab(cmd), exit_error(0));
+		return (free_tab(cmd), exit_error(1));
 	}
 	return (1);
 }
