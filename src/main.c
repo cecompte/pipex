@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/11 19:00:59 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/12 12:42:58 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,29 @@ int main(int argc, char **argv, char **envp)
 	}
 }
 
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	int		success;
+// 	char	**cmd;
+// 	int		fd;
+
+// 	if (argc < 2)
+// 		return (1);
+// 	fd = open(argv[1], O_RDONLY);
+// 	dup2(fd, 0);
+// 	close(fd);
+// 	cmd = build_cmd(argv[2]);
+// 	if (!cmd)
+// 		return (exit_error());
+// 	success = try_path(cmd, envp);
+// 	if (!success)
+// 		return (ft_printf("not found"));
+// 	return (free_tab(cmd), exit_error());
+// }
+
 /* to do 
 - command : infile "" cat outfile should return permission denied
+- no environment
 - check if all fds close properly : valgrind --trace-children=yes --track-fds=yes --leak-check=full --show-leak-kinds=all 
 - add another fork : ./pipex Makefile "sleep 5" "sleep 2" outfile
 */

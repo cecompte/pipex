@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:54:45 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/11 18:29:48 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/12 13:02:06 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,27 @@ static char	**split_dir(char **envp)
 	return (dir);
 }
 
-char	*find_path(char **cmd, char **envp, int *fd, int *end)
+int	try_path(char **cmd, char **envp, int *fd, int *end)
 {
 	char	**dir;
 	char	*path_cmd;
 	int		i;
 
-	if (!cmd)
-		return (NULL);
+	if (!cmd[0])
+		return (execve("./", cmd, envp));
 	dir = split_dir(envp);
 	if (!dir)
-		exit_close(fd, end);
+		return (free_tab(cmd), exit_close(fd, end));
 	i = 0;
 	while (dir[i])
 	{
 		path_cmd = build_path(dir[i], cmd);
 		if (!path_cmd)
-			return (free_tab(dir), exit_close(fd, end), NULL);
+			return (free_tab(dir), free_tab(cmd), exit_close(fd, end));
 		if (access(path_cmd, X_OK) == 0)
-			return (free_tab(dir), path_cmd);
+			return (free_tab(dir), execve(path_cmd, cmd, envp));
 		free(path_cmd);
 		i++;
 	}
-	return (free_tab(dir), NULL);
+	return (free_tab(dir), 0);
 }

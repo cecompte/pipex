@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:15:56 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/11 18:44:11 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/12 13:02:12 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@
 int		*open_files(char **argv);
 
 //find_path
-char	*find_path(char **cmd, char **envp, int *fd, int *end);
+int		try_path(char **cmd, char **envp, int *fd, int *end);
 char	**build_cmd(char *str);
 
 //errors
 void	free_tab(char **tab);
 int		exit_close(int *fd, int *end);
 int		exit_error(void);
-void	not_found(int *fd, int *end, char *s);
+int		not_found(int *fd, int *end, char **cmd);
 int		close_all(int *fd, int *end);
 
 //processes
