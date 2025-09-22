@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:18:21 by user              #+#    #+#             */
-/*   Updated: 2025/09/12 17:49:06 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/22 18:17:24 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@ int	not_found(char **argv, char **cmd, t_ids id)
 	if (id.tmp == 1)
 		unlink(argv[1]);
 	free_tab(cmd);
-	exit (127);
+	exit(127);
 	return (1);
 }

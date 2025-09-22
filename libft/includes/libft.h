@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:51:23 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/11 15:23:28 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/14 17:29:45 by user             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stddef.h>
-# include <bsd/string.h>
 # include <string.h>
 # include <stdio.h>
 # include <limits.h>
