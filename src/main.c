@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/22 18:31:07 by user             ###   ########.fr       */
+/*   Updated: 2025/09/23 11:45:47 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,11 @@ int	parent(t_ids id)
 	int		status2;
 
 	waitpid(id.child1, &status1, 0);
-    waitpid(id.child2, &status2, 0);
-    if (WIFEXITED(status1) && WEXITSTATUS(status1) != 0) {
-        return (WEXITSTATUS(status1));
-    }
-    if (WIFEXITED(status2) && WEXITSTATUS(status2) != 0) {
-        return (WEXITSTATUS(status2));
-    }
+	waitpid(id.child2, &status2, 0);
+	if (WIFEXITED(status1) && WEXITSTATUS(status1) != 0)
+		return (WEXITSTATUS(status1));
+	if (WIFEXITED(status2) && WEXITSTATUS(status2) != 0)
+		return (WEXITSTATUS(status2));
 	return (0);
 }
 
