@@ -6,11 +6,18 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/23 11:45:47 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/23 15:49:49 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+// void	init(t_ids	*id)
+// {
+// 	id->child1 = 0;
+// 	id->child2 = 0;
+// 	id->tmp = 0;
+// }
 
 void	open_files(t_ids *id, char **argv)
 {
@@ -33,13 +40,15 @@ void	open_files(t_ids *id, char **argv)
 	}
 }
 
-int	parent(t_ids id)
+int	parent(t_ids *id)
 {
 	int		status1;
 	int		status2;
 
-	waitpid(id.child1, &status1, 0);
-	waitpid(id.child2, &status2, 0);
+	status1 = 0;
+	status2 = 0;
+	waitpid(id->child1, &status1, 0);
+	waitpid(id->child2, &status2, 0);
 	if (WIFEXITED(status1) && WEXITSTATUS(status1) != 0)
 		return (WEXITSTATUS(status1));
 	if (WIFEXITED(status2) && WEXITSTATUS(status2) != 0)
@@ -69,8 +78,8 @@ int	main(int argc, char **argv, char **envp)
 	}
 	close_all(id);
 	if (id.tmp == 1)
-		return (unlink(argv[1]), 1);
-	return (parent(id));
+		unlink(argv[1]);
+	parent(&id);
 }
 
 /* to do 
