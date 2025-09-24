@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/24 14:00:08 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/24 15:48:11 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,8 @@ int	parent(t_ids *id)
 	int		status1;
 	int		status2;
 
-	ft_printf("%d\n",id->child2);
 	waitpid(id->child1, &status1, 0);
 	waitpid(id->child2, &status2, 0);
-	ft_printf("%d\n",WEXITSTATUS(status2));
 	if (WIFEXITED(status2) && WEXITSTATUS(status2) != 0)
 		return(WEXITSTATUS(status2));
 	return(0);
@@ -68,7 +66,7 @@ int	main(int argc, char **argv, char **envp)
 	id.child2 = 0;
 	if (id.child1 < 0)
 		return (exit_close(&id, argv));
-	if (id.child1 == 0)
+	else if (id.child1 == 0)
 		child_one(argv, envp, &id);
 	else
 	{
@@ -77,10 +75,11 @@ int	main(int argc, char **argv, char **envp)
 			exit_close(&id, argv);
 	 	else if (id.child2 == 0)
 	 		child_two(argv, envp, &id);
+		if (id.tmp == 1)
+			unlink(argv[1]);
+		close_all(&id);
+		return (parent(&id));
 	}
-	if (id.tmp == 1)
-		unlink(argv[1]);
-	return (parent(&id));
 }
 
 /* to do 
