@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:18:21 by user              #+#    #+#             */
-/*   Updated: 2025/09/22 18:17:24 by user             ###   ########.fr       */
+/*   Updated: 2025/09/24 13:04:31 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,31 @@ int	exit_error(int code)
 	return (1);
 }
 
-int	close_all(t_ids id)
+int	close_all(t_ids *id)
 {
-	close(id.fd[0]);
-	close(id.fd[1]);
-	close(id.end[0]);
-	close(id.end[1]);
+	close(id->fd[0]);
+	close(id->fd[1]);
+	close(id->end[0]);
+	close(id->end[1]);
 	return (1);
 }
 
-int	exit_close(t_ids id, char **argv)
+int	exit_close(t_ids *id, char **argv)
 {
 	perror(NULL);
 	close_all(id);
-	if (id.tmp == 1)
+	if (id->tmp == 1)
 		unlink(argv[1]);
 	exit(1);
 	return (1);
 }
 
-int	not_found(char **argv, char **cmd, t_ids id)
+int	not_found(char **argv, char **cmd, t_ids *id)
 {
 	ft_putstr_fd(cmd[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
 	close_all(id);
-	if (id.tmp == 1)
+	if (id->tmp == 1)
 		unlink(argv[1]);
 	free_tab(cmd);
 	exit(127);

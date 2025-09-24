@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:54:45 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/14 17:46:53 by user             ###   ########.fr       */
+/*   Updated: 2025/09/24 13:05:36 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	**split_dir(char **envp)
 	return (dir);
 }
 
-int	try_path(char **argv, char **cmd, char **envp, t_ids id)
+int	try_path(char **argv, char **cmd, char **envp, t_ids *id)
 {
 	char	**dir;
 	char	*path_cmd;

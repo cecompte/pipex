@@ -6,22 +6,22 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/23 15:49:49 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/24 14:00:08 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-// void	init(t_ids	*id)
-// {
-// 	id->child1 = 0;
-// 	id->child2 = 0;
-// 	id->tmp = 0;
-// }
+void	init(t_ids	*id)
+{
+	id->child1 = 0;
+	id->child2 = 0;
+	id->tmp = 0;
+}
 
 void	open_files(t_ids *id, char **argv)
 {
-	id->tmp = 0;
+	init(id);
 	if (access(argv[1], F_OK) != 0)
 	{
 		perror(NULL);
@@ -45,15 +45,13 @@ int	parent(t_ids *id)
 	int		status1;
 	int		status2;
 
-	status1 = 0;
-	status2 = 0;
+	ft_printf("%d\n",id->child2);
 	waitpid(id->child1, &status1, 0);
 	waitpid(id->child2, &status2, 0);
-	if (WIFEXITED(status1) && WEXITSTATUS(status1) != 0)
-		return (WEXITSTATUS(status1));
+	ft_printf("%d\n",WEXITSTATUS(status2));
 	if (WIFEXITED(status2) && WEXITSTATUS(status2) != 0)
-		return (WEXITSTATUS(status2));
-	return (0);
+		return(WEXITSTATUS(status2));
+	return(0);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -69,17 +67,20 @@ int	main(int argc, char **argv, char **envp)
 	id.child1 = fork();
 	id.child2 = 0;
 	if (id.child1 < 0)
-		return (exit_close(id, argv));
+		return (exit_close(&id, argv));
 	if (id.child1 == 0)
+		child_one(argv, envp, &id);
+	else
 	{
 		id.child2 = fork();
-		child_two(argv, envp, id);
-		child_one(argv, envp, id);
+		if (id.child2 < 0)
+			exit_close(&id, argv);
+	 	else if (id.child2 == 0)
+	 		child_two(argv, envp, &id);
 	}
-	close_all(id);
 	if (id.tmp == 1)
 		unlink(argv[1]);
-	parent(&id);
+	return (parent(&id));
 }
 
 /* to do 
