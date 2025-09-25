@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:15:56 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/24 17:13:46 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/25 13:11:16 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_ids
 	int		child1;
 	int		child2;
 	int		infile;
+	int		outfile;
 }	t_ids;
 
 //open file
@@ -38,7 +39,7 @@ char	**build_cmd(char *str);
 //errors
 void	free_tab(char **tab);
 int		exit_close(t_ids *id);
-int		exit_error(int code);
+void	error(char *error_msg);
 int		not_found(char **cmd, t_ids *id);
 int		close_all(t_ids *id);
 
