@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:54:45 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/25 10:58:47 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/25 15:27:48 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*build_path(char *src, char **cmd)
 	return (path);
 }
 
-static char	**split_dir(char **envp)
+static char	**split_dir(char **envp, t_ids *id)
 {
 	char	**dir;
 	char	*path_all;
@@ -41,6 +41,11 @@ static char	**split_dir(char **envp)
 		if (ft_strnstr(envp[i], "PATH", 4))
 			break ;
 		i++;
+	}
+	if (!envp[i])
+	{
+		id->path = 0;
+		return (NULL);
 	}
 	path_all = ft_substr(envp[i], 5, ft_strlen(envp[i]));
 	dir = ft_split(path_all, ':');
@@ -56,17 +61,19 @@ int	try_path(char **cmd, char **envp, t_ids *id)
 
 	if (!cmd[0])
 		return (execve("./", cmd, envp));
-	if (access(cmd[0], X_OK) == 0)
-		return (execve(cmd[0], cmd, envp));
-	dir = split_dir(envp);
-	if (!dir)
-		return (free_tab(cmd), exit_close(id));
+	if (ft_strchr(cmd[0], '/'))
+		return (execve(cmd[0], cmd, envp), exit_free(id, cmd, 127));
+	dir = split_dir(envp, id);
+	if (!dir && !id->path)
+		return (execve(cmd[0], cmd, envp), exit_free(id, cmd, 127));
+	else if (!dir && id->path)
+		return (free_tab(cmd), exit_close(id, 0, 1));
 	i = 0;
 	while (dir[i])
 	{
 		path_cmd = build_path(dir[i], cmd);
 		if (!path_cmd)
-			return (free_tab(dir), free_tab(cmd), exit_close(id));
+			return (free_tab(dir), free_tab(cmd), exit_close(id, 0, 1));
 		if (access(path_cmd, X_OK) == 0)
 			return (free_tab(dir), execve(path_cmd, cmd, envp));
 		free(path_cmd);

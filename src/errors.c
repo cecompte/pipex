@@ -6,52 +6,32 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:18:21 by user              #+#    #+#             */
-/*   Updated: 2025/09/25 11:54:42 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/25 15:26:05 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	if (!tab)
-		return ;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-	tab = NULL;
-}
-
-void	error(char *error_msg)
+void	error(char *msg)
 {
 	ft_putstr_fd("pipex: ", 2);
-	perror(error_msg);
+	perror(msg);
 }
 
-int	close_all(t_ids *id)
+int	exit_close(t_ids *id, char *msg, int code)
 {
-	if (id->fd[0] >= 0)
-		close(id->fd[0]);
-	if (id->fd[1] >= 0)
-		close(id->fd[1]);
-	if (id->end[0] >= 0)
-		close(id->end[0]);
-	if (id->end[1] >= 0)
-		close(id->end[1]);
+	error(msg);
+	close_all(id);
+	exit(code);
 	return (1);
 }
 
-int	exit_close(t_ids *id)
+int	exit_free(t_ids *id, char **cmd, int code)
 {
-	error(NULL);
+	error(cmd[0]);
+	free(cmd);
 	close_all(id);
-	exit(1);
+	exit(code);
 	return (1);
 }
 

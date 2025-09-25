@@ -6,23 +6,11 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:13:28 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/25 13:12:21 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/25 15:38:09 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	init(t_ids	*id)
-{
-	id->child1 = 0;
-	id->child2 = 0;
-	id->infile = 1;
-	id->outfile = 1;
-	id->fd[0] = -1;
-	id->fd[1] = -1;
-	id->end[0] = -1;
-	id->end[1] = -1;
-}
 
 void	open_files(t_ids *id, char **argv)
 {
@@ -36,7 +24,7 @@ void	open_files(t_ids *id, char **argv)
 	else
 		id->fd[0] = open(argv[1], O_RDONLY);
 	if (id->fd[0] < 0)
-		exit_close(id);
+		exit_close(id, 0, 1);
 	if (access(argv[4], F_OK) == 0 && access(argv[4], W_OK) != 0)
 	{
 		id->outfile = 0;
@@ -48,23 +36,8 @@ void	open_files(t_ids *id, char **argv)
 	{
 		id->fd[1] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (id->fd[1] < 0)
-			exit_close(id);
+			exit_close(id, 0, 1);
 	}
-}
-
-int	parent(t_ids *id)
-{
-	int		status1;
-	int		status2;
-
-	close_all(id);
-	if (waitpid(id->child1, &status1, 0) < 0)
-		return (exit_close(id));
-	if (waitpid(id->child2, &status2, 0) < 0)
-		return (exit_close(id));
-	if (WIFEXITED(status2) && WEXITSTATUS(status2) != 0)
-		return(WEXITSTATUS(status2));
-	return(0);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -73,32 +46,30 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 5)
 		return (ft_putstr_fd("Wrong nb of arguments\n", 2), 1);
-	if (!envp)
-		return (ft_putstr_fd("No environment\n", 2), 1);
 	open_files(&id, argv);
 	pipe(id.end);
 	id.child1 = fork();
 	if (id.child1 < 0)
-		return (exit_close(&id));
+		return (exit_close(&id, 0, 1));
 	else if (id.child1 == 0)
 		child_one(argv, envp, &id);
 	else
 	{
 		id.child2 = fork();
 		if (id.child2 < 0)
-			exit_close(&id);
-	 	else if (id.child2 == 0)
-	 		child_two(argv, envp, &id);
+			exit_close(&id, 0, 1);
+		else if (id.child2 == 0)
+			child_two(argv, envp, &id);
 		return (parent(&id));
 	}
 }
 
 // int	main(int argc, char **argv, char **envp)
 // {
-// 	char	*cmd[] = {"/bin/cat", "input", NULL};
+// 	char	*cmd[] = {"cat", NULL};
 // 	if (argc == 0 && !argv[1])
 // 		return (0);
-// 	execve("/bin/cat", cmd, envp);
+// 	execve("cat", cmd, envp);
 // 	perror("execve failed");
 // 	exit(0);
 // }

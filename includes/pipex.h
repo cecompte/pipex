@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 11:15:56 by cecompte          #+#    #+#             */
-/*   Updated: 2025/09/25 13:11:16 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/25 15:28:56 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,30 @@ typedef struct s_ids
 	int		child2;
 	int		infile;
 	int		outfile;
+	int		path;
 }	t_ids;
+
+//utils
+void	init(t_ids	*id);
+void	free_tab(char **tab);
+int		close_all(t_ids *id);
 
 //open file
 void	open_files(t_ids *id, char **argv);
 
-//find_path
+//find_path and exec
 int		try_path(char **cmd, char **envp, t_ids *id);
 char	**build_cmd(char *str);
 
 //errors
-void	free_tab(char **tab);
-int		exit_close(t_ids *id);
+int		exit_close(t_ids *id, char *msg, int code);
+int		exit_free(t_ids *id, char **cmd, int code);
 void	error(char *error_msg);
 int		not_found(char **cmd, t_ids *id);
-int		close_all(t_ids *id);
 
 //processes
 int		child_one(char **cmd, char **envp, t_ids *id);
 int		child_two(char **cmd, char **envp, t_ids *id);
+int		parent(t_ids *id);
 
 #endif

@@ -9,7 +9,8 @@ SRC				= main.c \
 					find_path.c \
 					build_cmd.c \
 					errors.c \
-					processes.c
+					processes.c \
+					utils.c
 SOURCES			= $(addprefix $(SRC_PATH), $(SRC))
 
 # Objects
