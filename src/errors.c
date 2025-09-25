@@ -6,7 +6,7 @@
 /*   By: cecompte <cecompte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 12:18:21 by user              #+#    #+#             */
-/*   Updated: 2025/09/25 15:26:05 by cecompte         ###   ########.fr       */
+/*   Updated: 2025/09/25 17:11:35 by cecompte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	exit_close(t_ids *id, char *msg, int code)
 int	exit_free(t_ids *id, char **cmd, int code)
 {
 	error(cmd[0]);
-	free(cmd);
+	free_tab(cmd);
 	close_all(id);
 	exit(code);
 	return (1);
